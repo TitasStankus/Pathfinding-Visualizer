@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <UniformGrid
+            x:Name="GridContainer"
+            Rows="20"
+            Columns="20"
+            Margin="20"
+            />
     </Grid>
 </Window>
