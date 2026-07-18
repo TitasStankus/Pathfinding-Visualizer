@@ -35,9 +35,20 @@ namespace Pathfinding_Visualizer
                     square.BorderThickness = new Thickness(1);
                     square.Background = Brushes.White;
 
+                    square.MouseLeftButtonDown += Square_click;
+
                     GridContainer.Children.Add(square);
                 }
             }
+        }
+
+        private void Square_click(Object sender, MouseEventArgs e)
+        {
+            Border square = (Border)sender;
+
+            if (square.Background == Brushes.White) square.Background = Brushes.Black;
+            else square.Background = Brushes.White;
+
         }
     }
 }
