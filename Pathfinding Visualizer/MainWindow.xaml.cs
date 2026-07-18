@@ -16,11 +16,15 @@ namespace Pathfinding_Visualizer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _isDrawing = false;
+
         public MainWindow()
         {
             InitializeComponent();
 
             CreateGrid();
+
+            MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
         }
 
         private void CreateGrid()
@@ -35,20 +39,34 @@ namespace Pathfinding_Visualizer
                     square.BorderThickness = new Thickness(1);
                     square.Background = Brushes.White;
 
-                    square.MouseLeftButtonDown += Square_click;
+                    square.MouseLeftButtonDown += Square_MouseLeftButtonDown;
+                    square.MouseEnter += Square_MouseEnter;
 
                     GridContainer.Children.Add(square);
                 }
             }
         }
 
-        private void Square_click(Object sender, MouseEventArgs e)
+        private void Square_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _isDrawing = true;
+
             Border square = (Border)sender;
+            square.Background = Brushes.Black;
+        }
 
-            if (square.Background == Brushes.White) square.Background = Brushes.Black;
-            else square.Background = Brushes.White;
+        private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDrawing = false;
+        }
 
+        private void Square_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_isDrawing)
+            {
+                Border square = (Border)sender;
+                square.Background = Brushes.Black;
+            }
         }
     }
 }
