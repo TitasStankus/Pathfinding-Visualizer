@@ -8,9 +8,14 @@ namespace Pathfinding_Visualizer.Models
     {
         public int Row { get; set; }
         public int Column { get; set; }
-        public bool IsWall { get; set; }
-        public bool BeenVisited { get; set; }
-        public bool IsStart { get; set; }
-        public bool IsEnd { get; set; }
+
+        public NodeState State { get; set; }
+
+        public Node(int row, int column)
+        {
+            Row = row;
+            Column = column;
+            State = NodeState.Empty;
+        }
     }
 }

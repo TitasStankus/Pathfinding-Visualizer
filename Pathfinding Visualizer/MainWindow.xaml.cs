@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Pathfinding_Visualizer.Models;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -41,9 +42,14 @@ namespace Pathfinding_Visualizer
                 {
                     Border square = new Border();
 
+                    Node node = new Node(row, column);
+
+                    square.Tag = node;
+
                     square.BorderBrush = Brushes.Gray;
                     square.BorderThickness = new Thickness(1);
-                    square.Background = Brushes.White;
+
+                    UpdateNodeColour(square);
 
                     square.MouseLeftButtonDown += Square_MouseLeftButtonDown;
                     square.MouseEnter += Square_MouseEnter;
@@ -53,12 +59,44 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        private void UpdateNodeColour(Border square)
+        {
+            Node node = (Node)square.Tag;
+
+            switch (node.State)
+            {
+                case NodeState.Empty:
+                    square.Background = Brushes.White;
+                    break;
+                case NodeState.Wall:
+                    square.Background = Brushes.Black;
+                    break;
+                case NodeState.Start:
+                    square.Background = Brushes.Green;
+                    break;
+                case NodeState.End:
+                    square.Background = Brushes.Red;
+                    break;
+                case NodeState.Visited:
+                    square.Background = Brushes.Blue;
+                    break;
+                case NodeState.Path:
+                    square.Background = Brushes.Yellow;
+                    break;
+            }
+        }
+
         private void Square_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = true;
 
             Border square = (Border)sender;
-            square.Background = Brushes.Black;
+
+            Node node = (Node)square.Tag;
+
+            node.State = NodeState.Wall;
+
+            UpdateNodeColour(square);
         }
 
         private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
