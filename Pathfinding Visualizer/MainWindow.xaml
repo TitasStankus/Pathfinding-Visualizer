@@ -5,13 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pathfinding_Visualizer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="900">
     <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Orientation="Horizontal"
+                Margin="10">
+
+            <TextBox
+            x:Name="GridSizeInput"
+            Width="100"
+            Text="20"/>
+
+            <Button
+            Content="Create Grid"
+            Click="GenerateGrid_Click"
+            Margin="10,0,0,0"/>
+
+        </StackPanel>
+
+
         <UniformGrid
-            x:Name="GridContainer"
-            Rows="20"
-            Columns="20"
-            Margin="20"
-            />
+        Grid.Row="1"
+        x:Name="GridContainer"
+        Margin="10"/>
+
     </Grid>
 </Window>

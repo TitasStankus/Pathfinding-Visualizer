@@ -16,6 +16,9 @@ namespace Pathfinding_Visualizer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int _rows = 20;
+        private int _columns = 20;
+
         private bool _isDrawing = false;
 
         public MainWindow()
@@ -29,9 +32,12 @@ namespace Pathfinding_Visualizer
 
         private void CreateGrid()
         {
-            for (int row=0; row < 20; row++)
+            GridContainer.Rows = _rows;
+            GridContainer.Columns = _columns;
+
+            for (int row=0; row < _rows; row++)
             {
-                for (int column=0; column < 20; column++)
+                for (int column=0; column < _columns; column++)
                 {
                     Border square = new Border();
 
@@ -67,6 +73,28 @@ namespace Pathfinding_Visualizer
                 Border square = (Border)sender;
                 square.Background = Brushes.Black;
             }
+        }
+
+        private void GenerateGrid_Click(object sender, RoutedEventArgs e)
+        {
+            if (!int.TryParse(GridSizeInput.Text, out int size))
+            {
+                MessageBox.Show("Please enter a valid grid size.");
+                return;
+            }
+
+            if (size < 5 || size > 200)
+            {
+                MessageBox.Show("Please enter a grid size between 5 and 200.");
+                return;
+            }
+
+            _rows = size;
+            _columns = size;
+
+            GridContainer.Children.Clear();
+
+            CreateGrid();
         }
     }
 }
