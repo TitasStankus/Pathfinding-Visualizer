@@ -22,6 +22,8 @@ namespace Pathfinding_Visualizer
 
         private bool _isDrawing = false;
 
+        private bool _startSet = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,6 +54,7 @@ namespace Pathfinding_Visualizer
                     UpdateNodeColour(square);
 
                     square.MouseLeftButtonDown += Square_MouseLeftButtonDown;
+                    square.MouseRightButtonDown += Square_MouseRightButtonDown;
                     square.MouseEnter += Square_MouseEnter;
 
                     GridContainer.Children.Add(square);
@@ -91,6 +94,34 @@ namespace Pathfinding_Visualizer
             _isDrawing = true;
 
             ChangeState(sender);
+        }
+
+        private void Square_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Border square = (Border)sender;
+
+            Node node = (Node)square.Tag;
+
+            if (!_startSet)
+            {
+                node.State = NodeState.Start;
+                _startSet = true;
+            }
+            else if (node.State == NodeState.Start)
+            {
+                node.State = NodeState.Empty;
+                _startSet = false;
+            }
+            else if (node.State == NodeState.End)
+            {
+                node.State = NodeState.Empty;
+            }
+            else
+            {
+                node.State = NodeState.End;
+            }
+
+            UpdateNodeColour(square);
         }
 
         private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
