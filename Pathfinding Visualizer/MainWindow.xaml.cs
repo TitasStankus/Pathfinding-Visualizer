@@ -23,6 +23,7 @@ namespace Pathfinding_Visualizer
         private bool _isDrawing = false;
 
         private bool _startSet = false;
+        private bool _endSet = false;
 
         public MainWindow()
         {
@@ -102,7 +103,7 @@ namespace Pathfinding_Visualizer
 
             Node node = (Node)square.Tag;
 
-            if (!_startSet)
+            if (!_startSet && node.State != NodeState.End)
             {
                 node.State = NodeState.Start;
                 _startSet = true;
@@ -115,10 +116,12 @@ namespace Pathfinding_Visualizer
             else if (node.State == NodeState.End)
             {
                 node.State = NodeState.Empty;
+                _endSet = false;
             }
-            else
+            else if (!_endSet)
             {
                 node.State = NodeState.End;
+                _endSet = true;
             }
 
             UpdateNodeColour(square);
@@ -169,7 +172,7 @@ namespace Pathfinding_Visualizer
             {
                 node.State = NodeState.Empty;
             }
-            else
+            else if (node.State == NodeState.Empty)
             {
                 node.State = NodeState.Wall;
             }
