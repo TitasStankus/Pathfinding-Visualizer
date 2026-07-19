@@ -22,8 +22,8 @@ namespace Pathfinding_Visualizer
 
         private bool _isDrawing = false;
 
-        private bool _startSet = false;
-        private bool _endSet = false;
+        private bool _startSet;
+        private bool _endSet;
 
         public MainWindow()
         {
@@ -36,6 +36,9 @@ namespace Pathfinding_Visualizer
 
         private void CreateGrid()
         {
+            _startSet = false;
+            _endSet = false;
+
             GridContainer.Rows = _rows;
             GridContainer.Columns = _columns;
 
@@ -142,6 +145,9 @@ namespace Pathfinding_Visualizer
 
         private void GenerateGrid_Click(object sender, RoutedEventArgs e)
         {
+            _startSet = false;
+            _endSet = false;
+
             if (!int.TryParse(GridSizeInput.Text, out int size))
             {
                 MessageBox.Show("Please enter a valid grid size.");
