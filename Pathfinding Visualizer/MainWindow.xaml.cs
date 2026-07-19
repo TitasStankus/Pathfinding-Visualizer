@@ -90,13 +90,7 @@ namespace Pathfinding_Visualizer
         {
             _isDrawing = true;
 
-            Border square = (Border)sender;
-
-            Node node = (Node)square.Tag;
-
-            node.State = NodeState.Wall;
-
-            UpdateNodeColour(square);
+            ChangeState(sender);
         }
 
         private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -108,8 +102,7 @@ namespace Pathfinding_Visualizer
         {
             if (_isDrawing)
             {
-                Border square = (Border)sender;
-                square.Background = Brushes.Black;
+                ChangeState(sender);
             }
         }
 
@@ -133,6 +126,24 @@ namespace Pathfinding_Visualizer
             GridContainer.Children.Clear();
 
             CreateGrid();
+        }
+
+        private void ChangeState(object sender)
+        {
+            Border square = (Border)sender;
+
+            Node node = (Node)square.Tag;
+
+            if (node.State == NodeState.Wall)
+            {
+                node.State = NodeState.Empty;
+            }
+            else
+            {
+                node.State = NodeState.Wall;
+            }
+
+            UpdateNodeColour(square);
         }
     }
 }
