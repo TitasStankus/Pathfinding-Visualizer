@@ -27,6 +27,11 @@
             Click="GenerateGrid_Click"
             Margin="10,0,0,0"/>
 
+            <Button
+            Content="Reset Path"
+            Click="ResetPath_Click"
+            Margin="10,0,0,0"/>
+
         </StackPanel>
 
 
