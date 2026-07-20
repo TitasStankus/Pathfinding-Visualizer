@@ -17,11 +17,6 @@ namespace Pathfinding_Visualizer
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Path test
-        int lowerX = 0;
-        int lowerY = 0;
-        int upperX = 3;
-
         private int _rows = 20;
         private int _columns = 20;
 
@@ -59,12 +54,6 @@ namespace Pathfinding_Visualizer
 
                     square.BorderBrush = Brushes.Gray;
                     square.BorderThickness = new Thickness(1);
-
-                    // Path test
-                    if (row == lowerY && column >= lowerX && column <= upperX)
-                    {
-                        node.State = NodeState.Path;
-                    }
 
                     UpdateNodeColour(square);
 
