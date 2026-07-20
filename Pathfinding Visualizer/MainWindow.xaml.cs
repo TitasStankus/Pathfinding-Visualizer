@@ -93,6 +93,203 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        private void ChangeState(object sender)
+        {
+            Border square = (Border)sender;
+
+            Node node = (Node)square.Tag;
+
+            if (node.State == NodeState.Wall)
+            {
+                node.State = NodeState.Empty;
+            }
+            else if (node.State == NodeState.Empty)
+            {
+                node.State = NodeState.Wall;
+            }
+
+            UpdateNodeColour(square);
+        }
+
+        private Node? GetStartNode()
+        {
+            foreach (Border square in GridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+
+                if (node.State == NodeState.Start)
+                {
+                    return node;
+                }
+            }
+
+            return null;
+        }
+
+        private Node? GetEndNode()
+        {
+            foreach (Border square in GridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+
+                if (node.State == NodeState.End)
+                {
+                    return node;
+                }
+            }
+
+            return null;
+        }
+
+        private List<Node> GetNeighbours(Node node)
+        {
+            List<Node> neighbours = new List<Node>();
+
+            foreach (Border square in GridContainer.Children)
+            {
+                Node other = (Node)square.Tag;
+
+                // Above
+                if (other.Row == node.Row - 1 && other.Column == node.Column)
+                    neighbours.Add(other);
+
+                // Below
+                if (other.Row == node.Row + 1 && other.Column == node.Column)
+                    neighbours.Add(other);
+
+                // Left
+                if (other.Row == node.Row && other.Column == node.Column - 1)
+                    neighbours.Add(other);
+
+                // Right
+                if (other.Row == node.Row && other.Column == node.Column + 1)
+                    neighbours.Add(other);
+            }
+
+            return neighbours;
+        }
+
+        private Node GetNodeAt(int row, int column)
+        {
+            foreach (Border square in GridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+
+                if (node.Row == row && node.Column == column)
+                {
+                    return node;
+                }
+            }
+
+            return null;
+        }
+
+        private Border? GetBorderForNode(Node node)
+        {
+            foreach (Border square in GridContainer.Children)
+            {
+                if (square.Tag == node)
+                {
+                    return square;
+                }
+            }
+
+            return null;
+        }
+
+        private async void RunBFS_Click(object sender, RoutedEventArgs e)
+        {
+            await BreadthFirstSearch();
+        }
+
+        private async Task BreadthFirstSearch()
+        {
+            Node? start = GetStartNode();
+            Node? end = GetEndNode();
+
+            if (start == null || end == null)
+            {
+                MessageBox.Show("Please place a Start and End node.");
+                return;
+            }
+
+            Queue<Node> queue = new Queue<Node>();
+
+            HashSet<Node> visited = new HashSet<Node>();
+
+            Dictionary<Node, Node> parent = new Dictionary<Node, Node>();
+
+            queue.Enqueue(start);
+
+            visited.Add(start);
+
+            while (queue.Count > 0)
+            {
+                Node current = queue.Dequeue();
+
+                if (current == end)
+                    break;
+
+                foreach (Node neighbour in GetNeighbours(current))
+                {
+                    if (visited.Contains(neighbour))
+                        continue;
+
+                    if (neighbour.State == NodeState.Wall)
+                        continue;
+
+                    visited.Add(neighbour);
+
+                    parent[neighbour] = current;
+
+                    queue.Enqueue(neighbour);
+
+                    if (neighbour != end)
+                    {
+                        neighbour.State = NodeState.Visited;
+
+                        Border? square = GetBorderForNode(neighbour);
+
+                        if (square != null)
+                            UpdateNodeColour(square);
+
+                        await Task.Delay(20);
+                    }
+                }
+            }
+
+            DrawPath(parent, start, end);
+
+        }
+
+        private async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
+        {
+            if (!parent.ContainsKey(end))
+            {
+                MessageBox.Show("No path found.");
+                return;
+            }
+
+            Node current = end;
+
+            while (current != start)
+            {
+                if (current != end)
+                {
+                    current.State = NodeState.Path;
+
+                    Border? square = GetBorderForNode(current);
+
+                    if (square != null)
+                        UpdateNodeColour(square);
+
+                    await Task.Delay(40);
+                }
+
+                current = parent[current];
+            }
+        }
+
         private void Square_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = true;
@@ -180,24 +377,6 @@ namespace Pathfinding_Visualizer
                     UpdateNodeColour(square);
                 }
             }
-        }
-
-        private void ChangeState(object sender)
-        {
-            Border square = (Border)sender;
-
-            Node node = (Node)square.Tag;
-
-            if (node.State == NodeState.Wall)
-            {
-                node.State = NodeState.Empty;
-            }
-            else if (node.State == NodeState.Empty)
-            {
-                node.State = NodeState.Wall;
-            }
-
-            UpdateNodeColour(square);
         }
     }
 }
