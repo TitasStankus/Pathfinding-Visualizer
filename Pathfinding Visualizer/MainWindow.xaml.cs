@@ -17,6 +17,8 @@ namespace Pathfinding_Visualizer
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Variables
+
         private int _rows = 20;
         private int _columns = 20;
 
@@ -25,6 +27,7 @@ namespace Pathfinding_Visualizer
         private bool _startSet;
         private bool _endSet;
 
+        // Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +37,9 @@ namespace Pathfinding_Visualizer
             MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
         }
 
+        /// <summary>
+        /// Creates the grid of squares
+        /// </summary>
         private void CreateGrid()
         {
             _startSet = false;
@@ -66,6 +72,10 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        /// <summary>
+        /// Updates the colour of a square based on its state
+        /// </summary>
+        /// <param name="square"></param>
         private void UpdateNodeColour(Border square)
         {
             Node node = (Node)square.Tag;
@@ -93,6 +103,10 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        /// <summary>
+        /// Changes the state of a square when clicked
+        /// </summary>
+        /// <param name="sender"></param>
         private void ChangeState(object sender)
         {
             Border square = (Border)sender;
@@ -111,6 +125,10 @@ namespace Pathfinding_Visualizer
             UpdateNodeColour(square);
         }
 
+        /// <summary>
+        /// Gets the start node from the grid
+        /// </summary>
+        /// <returns></returns>
         private Node? GetStartNode()
         {
             foreach (Border square in GridContainer.Children)
@@ -126,6 +144,10 @@ namespace Pathfinding_Visualizer
             return null;
         }
 
+        /// <summary>
+        /// Gets the end node from the grid
+        /// </summary>
+        /// <returns></returns>
         private Node? GetEndNode()
         {
             foreach (Border square in GridContainer.Children)
@@ -141,6 +163,11 @@ namespace Pathfinding_Visualizer
             return null;
         }
 
+        /// <summary>
+        /// Gets the neighbours of a node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private List<Node> GetNeighbours(Node node)
         {
             List<Node> neighbours = new List<Node>();
@@ -169,21 +196,11 @@ namespace Pathfinding_Visualizer
             return neighbours;
         }
 
-        private Node GetNodeAt(int row, int column)
-        {
-            foreach (Border square in GridContainer.Children)
-            {
-                Node node = (Node)square.Tag;
-
-                if (node.Row == row && node.Column == column)
-                {
-                    return node;
-                }
-            }
-
-            return null;
-        }
-
+        /// <summary>
+        /// Gets the border for a given node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private Border? GetBorderForNode(Node node)
         {
             foreach (Border square in GridContainer.Children)
@@ -197,6 +214,9 @@ namespace Pathfinding_Visualizer
             return null;
         }
 
+        /// <summary>
+        /// Resets the distances of all nodes
+        /// </summary>
         private void ResetNodeDistances()
         {
             foreach (Border square in GridContainer.Children)
@@ -221,6 +241,10 @@ namespace Pathfinding_Visualizer
             await Dijkstra();
         }
 
+        /// <summary>
+        /// Performs a breadth-first search on the grid
+        /// </summary>
+        /// <returns></returns>
         private async Task BreadthFirstSearch()
         {
             Node? start = GetStartNode();
@@ -281,6 +305,10 @@ namespace Pathfinding_Visualizer
 
         }
 
+        /// <summary>
+        /// Performs a depth-first search on the grid
+        /// </summary>
+        /// <returns></returns>
         private async Task DepthFirstSearch()
         {
             Node? start = GetStartNode();
@@ -340,6 +368,10 @@ namespace Pathfinding_Visualizer
             DrawPath(parent, start, end);
         }
 
+        /// <summary>
+        /// Performs Dijkstra's algorithm on the grid
+        /// </summary>
+        /// <returns></returns>
         private async Task Dijkstra()
         {
             Node? start = GetStartNode();
@@ -416,6 +448,12 @@ namespace Pathfinding_Visualizer
             DrawPath(parent, start, end);
         }
 
+        /// <summary>
+        /// Draws the path from the end node to the start node using the parent dictionary
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         private async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
         {
             if (!parent.ContainsKey(end))
@@ -444,6 +482,11 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        /// <summary>
+        /// Handles the mouse left button down event on a square to start drawing walls
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Square_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = true;
@@ -451,6 +494,11 @@ namespace Pathfinding_Visualizer
             ChangeState(sender);
         }
 
+        /// <summary>
+        /// Handles the mouse right button down event on a square to set the start or end node
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Square_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             Border square = (Border)sender;
@@ -481,11 +529,21 @@ namespace Pathfinding_Visualizer
             UpdateNodeColour(square);
         }
 
+        /// <summary>
+        /// Handles the mouse left button up event on the main window to stop drawing walls
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isDrawing = false;
         }
 
+        /// <summary>
+        /// Handles the mouse enter event on a square to change its state if drawing is active
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Square_MouseEnter(object sender, MouseEventArgs e)
         {
             if (_isDrawing)
@@ -494,6 +552,11 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        /// <summary>
+        /// Handles the click event on the Generate Grid button to create a new grid with the specified size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GenerateGrid_Click(object sender, RoutedEventArgs e)
         {
             _startSet = false;
@@ -519,6 +582,11 @@ namespace Pathfinding_Visualizer
             CreateGrid();
         }
 
+        /// <summary>
+        /// Handles the click event on the Reset Path button to clear the visited and path nodes from the grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ResetPath_Click(object sender, RoutedEventArgs e)
         {
             foreach (Border square in GridContainer.Children)
