@@ -202,6 +202,11 @@ namespace Pathfinding_Visualizer
             await BreadthFirstSearch();
         }
 
+        private async void RunDFS_Click(object sender, RoutedEventArgs e)
+        {
+            await DepthFirstSearch();
+        }
+
         private async Task BreadthFirstSearch()
         {
             Node? start = GetStartNode();
@@ -260,6 +265,65 @@ namespace Pathfinding_Visualizer
 
             DrawPath(parent, start, end);
 
+        }
+
+        private async Task DepthFirstSearch()
+        {
+            Node? start = GetStartNode();
+            Node? end = GetEndNode();
+
+            if (start == null || end == null)
+            {
+                MessageBox.Show("Please place a Start and End node.");
+                return;
+            }
+
+            Stack<Node> stack = new Stack<Node>();
+
+            HashSet<Node> visited = new HashSet<Node>();
+
+            Dictionary<Node, Node> parent = new Dictionary<Node, Node>();
+
+            stack.Push(start);
+
+            visited.Add(start);
+
+            while (stack.Count > 0)
+            {
+                Node current = stack.Pop();
+
+                if (current == end)
+                    break;
+
+                foreach (Node neighbour in GetNeighbours(current))
+                {
+                    if (visited.Contains(neighbour))
+                        continue;
+
+                    if (neighbour.State == NodeState.Wall)
+                        continue;
+
+                    visited.Add(neighbour);
+
+                    parent[neighbour] = current;
+
+                    stack.Push(neighbour);
+
+                    if (neighbour != end)
+                    {
+                        neighbour.State = NodeState.Visited;
+
+                        Border? square = GetBorderForNode(neighbour);
+
+                        if (square != null)
+                            UpdateNodeColour(square);
+
+                        await Task.Delay(20);
+                    }
+                }
+            }
+
+            DrawPath(parent, start, end);
         }
 
         private async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)

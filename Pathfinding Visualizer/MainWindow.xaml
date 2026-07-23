@@ -37,6 +37,11 @@
             Click="RunBFS_Click"
             Margin="10,0,0,0"/>
 
+            <Button
+            Content="Run DFS"
+            Click="RunDFS_Click"
+            Margin="10,0,0,0"/>
+
         </StackPanel>
 
 
