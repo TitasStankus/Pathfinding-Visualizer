@@ -37,6 +37,8 @@ namespace Pathfinding_Visualizer
             MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
         }
 
+        // ---------------------------- Grid Management --------------------------
+
         /// <summary>
         /// Creates the grid of squares
         /// </summary>
@@ -124,6 +126,42 @@ namespace Pathfinding_Visualizer
 
             UpdateNodeColour(square);
         }
+
+        /// <summary>
+        /// Draws the path from the end node to the start node using the parent dictionary
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        private async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
+        {
+            if (!parent.ContainsKey(end))
+            {
+                MessageBox.Show("No path found.");
+                return;
+            }
+
+            Node current = end;
+
+            while (current != start)
+            {
+                if (current != end)
+                {
+                    current.State = NodeState.Path;
+
+                    Border? square = GetBorderForNode(current);
+
+                    if (square != null)
+                        UpdateNodeColour(square);
+
+                    await Task.Delay(40);
+                }
+
+                current = parent[current];
+            }
+        }
+
+        // ---------------------------- Helper Methods ---------------------------
 
         /// <summary>
         /// Gets the start node from the grid
@@ -226,6 +264,8 @@ namespace Pathfinding_Visualizer
             }
         }
 
+        // ---------------------------- Algorithm Buttons ---------------------------
+
         private async void RunBFS_Click(object sender, RoutedEventArgs e)
         {
             await BreadthFirstSearch();
@@ -240,6 +280,8 @@ namespace Pathfinding_Visualizer
         {
             await Dijkstra();
         }
+
+        // ---------------------------- Pathfinding Algorithms ---------------------------
 
         /// <summary>
         /// Performs a breadth-first search on the grid
@@ -448,39 +490,7 @@ namespace Pathfinding_Visualizer
             DrawPath(parent, start, end);
         }
 
-        /// <summary>
-        /// Draws the path from the end node to the start node using the parent dictionary
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        private async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
-        {
-            if (!parent.ContainsKey(end))
-            {
-                MessageBox.Show("No path found.");
-                return;
-            }
-
-            Node current = end;
-
-            while (current != start)
-            {
-                if (current != end)
-                {
-                    current.State = NodeState.Path;
-
-                    Border? square = GetBorderForNode(current);
-
-                    if (square != null)
-                        UpdateNodeColour(square);
-
-                    await Task.Delay(40);
-                }
-
-                current = parent[current];
-            }
-        }
+        // ---------------------------- Event Handlers ---------------------------
 
         /// <summary>
         /// Handles the mouse left button down event on a square to start drawing walls
