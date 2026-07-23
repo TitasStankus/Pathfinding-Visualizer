@@ -11,11 +11,14 @@ namespace Pathfinding_Visualizer.Models
 
         public NodeState State { get; set; }
 
+        public int Distance { get; set; }
+
         public Node(int row, int column)
         {
             Row = row;
             Column = column;
             State = NodeState.Empty;
+            Distance = int.MaxValue;
         }
     }
 }

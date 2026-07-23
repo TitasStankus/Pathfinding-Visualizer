@@ -197,6 +197,15 @@ namespace Pathfinding_Visualizer
             return null;
         }
 
+        private void ResetNodeDistances()
+        {
+            foreach (Border square in GridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+                node.Distance = int.MaxValue;
+            }
+        }
+
         private async void RunBFS_Click(object sender, RoutedEventArgs e)
         {
             await BreadthFirstSearch();
@@ -205,6 +214,11 @@ namespace Pathfinding_Visualizer
         private async void RunDFS_Click(object sender, RoutedEventArgs e)
         {
             await DepthFirstSearch();
+        }
+
+        private async void RunDijkstra_Click(object sender, RoutedEventArgs e)
+        {
+            await Dijkstra();
         }
 
         private async Task BreadthFirstSearch()
@@ -319,6 +333,82 @@ namespace Pathfinding_Visualizer
                             UpdateNodeColour(square);
 
                         await Task.Delay(20);
+                    }
+                }
+            }
+
+            DrawPath(parent, start, end);
+        }
+
+        private async Task Dijkstra()
+        {
+            Node? start = GetStartNode();
+            Node? end = GetEndNode();
+
+            if (start == null || end == null)
+            {
+                MessageBox.Show("Place a Start and End node.");
+                return;
+            }
+
+            ResetPath_Click(null, null);
+            ResetNodeDistances();
+
+            foreach (Border square in GridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+
+                node.Distance = int.MaxValue;
+            }
+
+            Dictionary<Node, Node> parent = new();
+
+            HashSet<Node> visited = new();
+
+            PriorityQueue<Node, int> queue = new();
+
+            start.Distance = 0;
+
+            queue.Enqueue(start, 0);
+
+            while (queue.Count > 0)
+            {
+                Node current = queue.Dequeue();
+
+                if (visited.Contains(current))
+                    continue;
+
+                visited.Add(current);
+
+                if (current == end)
+                    break;
+
+                foreach (Node neighbour in GetNeighbours(current))
+                {
+                    if (neighbour.State == NodeState.Wall)
+                        continue;
+
+                    int newDistance = current.Distance + 1;
+
+                    if (newDistance < neighbour.Distance)
+                    {
+                        neighbour.Distance = newDistance;
+
+                        parent[neighbour] = current;
+
+                        queue.Enqueue(neighbour, neighbour.Distance);
+
+                        if (neighbour != end)
+                        {
+                            neighbour.State = NodeState.Visited;
+
+                            Border? square = GetBorderForNode(neighbour);
+
+                            if (square != null)
+                                UpdateNodeColour(square);
+
+                            await Task.Delay(20);
+                        }
                     }
                 }
             }
