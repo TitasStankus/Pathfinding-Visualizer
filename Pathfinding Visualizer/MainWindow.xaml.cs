@@ -261,10 +261,23 @@ namespace Pathfinding_Visualizer
             {
                 Node node = (Node)square.Tag;
                 node.Distance = int.MaxValue;
+                node.Heuristic = 0;
             }
         }
 
-        // ---------------------------- Algorithm Buttons ---------------------------
+        /// <summary>
+        /// Calculates the heuristic for a node based on its distance to the end node using Manhattan distance
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        private int GetHeuristic(Node current, Node end)
+        {
+            return Math.Abs(current.Row - end.Row)
+                 + Math.Abs(current.Column - end.Column);
+        }
+
+        // ---------------------------- Algorithm Buttons ------------------------
 
         private async void RunBFS_Click(object sender, RoutedEventArgs e)
         {
@@ -281,7 +294,12 @@ namespace Pathfinding_Visualizer
             await Dijkstra();
         }
 
-        // ---------------------------- Pathfinding Algorithms ---------------------------
+        private async void RunAStar_Click(object sender, RoutedEventArgs e)
+        {
+            await AStar();
+        }
+
+        // ---------------------------- Pathfinding Algorithms -------------------
 
         /// <summary>
         /// Performs a breadth-first search on the grid
@@ -471,6 +489,82 @@ namespace Pathfinding_Visualizer
                         parent[neighbour] = current;
 
                         queue.Enqueue(neighbour, neighbour.Distance);
+
+                        if (neighbour != end)
+                        {
+                            neighbour.State = NodeState.Visited;
+
+                            Border? square = GetBorderForNode(neighbour);
+
+                            if (square != null)
+                                UpdateNodeColour(square);
+
+                            await Task.Delay(20);
+                        }
+                    }
+                }
+            }
+
+            DrawPath(parent, start, end);
+        }
+
+        /// <summary>
+        /// Performs A* search algorithm on the grid
+        /// </summary>
+        /// <returns></returns>
+        private async Task AStar()
+        {
+            Node? start = GetStartNode();
+            Node? end = GetEndNode();
+
+            if (start == null || end == null)
+            {
+                MessageBox.Show("Place a Start and End node.");
+                return;
+            }
+
+            ResetPath_Click(null, null);
+            ResetNodeDistances();
+
+            Dictionary<Node, Node> parent = new();
+
+            HashSet<Node> visited = new();
+
+            PriorityQueue<Node, int> openSet = new();
+
+            start.Distance = 0;
+            start.Heuristic = GetHeuristic(start, end);
+
+            openSet.Enqueue(start, start.TotalCost);
+
+            while (openSet.Count > 0)
+            {
+                Node current = openSet.Dequeue();
+
+                if (visited.Contains(current))
+                    continue;
+
+                visited.Add(current);
+
+                if (current == end)
+                    break;
+
+                foreach (Node neighbour in GetNeighbours(current))
+                {
+                    if (neighbour.State == NodeState.Wall)
+                        continue;
+
+                    int newDistance = current.Distance + 1;
+
+                    if (newDistance < neighbour.Distance)
+                    {
+                        neighbour.Distance = newDistance;
+
+                        neighbour.Heuristic = GetHeuristic(neighbour, end);
+
+                        parent[neighbour] = current;
+
+                        openSet.Enqueue(neighbour, neighbour.TotalCost);
 
                         if (neighbour != end)
                         {

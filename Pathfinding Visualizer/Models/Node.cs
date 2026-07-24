@@ -13,12 +13,19 @@ namespace Pathfinding_Visualizer.Models
 
         public int Distance { get; set; }
 
+        public int Heuristic { get; set; }
+
         public Node(int row, int column)
         {
             Row = row;
             Column = column;
             State = NodeState.Empty;
             Distance = int.MaxValue;
+        }
+
+        public int TotalCost
+        {
+            get { return Distance + Heuristic; }
         }
     }
 }
