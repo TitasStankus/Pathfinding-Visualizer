@@ -52,6 +52,8 @@ namespace Pathfinding_Visualizer.Models
         /// </summary>
         public void CreateGrid()
         {
+            _gridContainer.Children.Clear();
+
             _gridContainer.Rows = _rows;    
             _gridContainer.Columns = _columns;
 

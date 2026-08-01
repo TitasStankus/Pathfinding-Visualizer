@@ -166,7 +166,6 @@ namespace Pathfinding_Visualizer
             _gridModel.Rows = size;
             _gridModel.Columns = size;
 
-            _gridModel = new GridModel(GridContainer, Square_MouseLeftButtonDown, Square_MouseRightButtonDown, Square_MouseEnter);
             _gridModel.CreateGrid();
         }
 
