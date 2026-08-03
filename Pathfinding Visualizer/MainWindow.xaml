@@ -18,52 +18,64 @@
                 Margin="10">
 
             <TextBox
-            x:Name="GridSizeInput"
-            Width="100"
-            Text="20"/>
+                x:Name="GridSizeInput"
+                Width="100"
+                Text="20"/>
 
             <Button
-            Content="Create Grid"
-            Click="GenerateGrid_Click"
-            Margin="10,0,0,0"/>
+                Content="Create Grid"
+                Click="GenerateGrid_Click"
+                Margin="10,0,0,0"/>
 
             <Button
-            Content="Reset Path"
-            Click="ResetPath_Click"
-            Margin="10,0,0,0"/>
+                Content="Reset Path"
+                Click="ResetPath_Click"
+                Margin="10,0,0,0"/>
 
             <Button
-            Content="Run BFS"
-            Click="RunBFS_Click"
-            Margin="10,0,0,0"/>
+                Content="Run BFS"
+                Click="RunBFS_Click"
+                Margin="10,0,0,0"/>
 
             <Button
-            Content="Run DFS"
-            Click="RunDFS_Click"
-            Margin="10,0,0,0"/>
+                Content="Run DFS"
+                Click="RunDFS_Click"
+                Margin="10,0,0,0"/>
 
             <Button
-            Content="Run Dijkstra"
-            Click="RunDijkstra_Click"
-            Margin="10,0,0,0"/>
+                Content="Run Dijkstra"
+                Click="RunDijkstra_Click"
+                Margin="10,0,0,0"/>
 
             <Button
-            Content="Run A*"
-            Click="RunAStar_Click"
-            Margin="10,0,0,0"/>
+                Content="Run A*"
+                Click="RunAStar_Click"
+                Margin="10,0,0,0"/>
 
             <TextBlock
-            Text="Animation Speed:"
-            VerticalAlignment="Center"
-            Margin="20,0,5,0"/>
+                Text="Animation Speed:"
+                VerticalAlignment="Center"
+                Margin="20,0,5,0"/>
 
             <Slider
-            x:Name="AnimationSpeedSlider"
-            Minimum="1"
-            Maximum="100"
-            Value="20"
-            Width="150"
-            ValueChanged="AnimationSpeedSlider_ValueChanged"/>
+                x:Name="AnimationSpeedSlider"
+                Minimum="1"
+                Maximum="100"
+                Value="20"
+                Width="150"
+                ValueChanged="AnimationSpeedSlider_ValueChanged"/>
+
+            <Button
+                Content="Pause"
+                Click="Pause_Click"/>
+
+            <Button
+                Content="Resume"
+                Click="Resume_Click"/>
+            
+            <Button
+                Content="Stop"
+                Click="Stop_Click"/>
 
         </StackPanel>
 

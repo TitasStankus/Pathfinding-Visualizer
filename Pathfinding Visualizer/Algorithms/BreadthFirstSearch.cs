@@ -12,11 +12,13 @@ namespace Pathfinding_Visualizer.Algorithms
     {
         private GridModel _gridModel;
         private Helpers _helpers;
+        private AnimationController _animationController;
 
-        public BreadthFirstSearch(GridModel gridModel, Helpers helpers)
+        public BreadthFirstSearch(GridModel gridModel, Helpers helpers, AnimationController animationController)
         {
             _gridModel = gridModel;
             _helpers = helpers;
+            _animationController = animationController;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace Pathfinding_Visualizer.Algorithms
                         if (square != null)
                             _gridModel.UpdateNodeColour(square);
 
-                        await Task.Delay(_gridModel.animationDelay);
+                        await _animationController.WaitAsync();
                     }
                 }
             }

@@ -30,12 +30,14 @@ namespace Pathfinding_Visualizer
         private bool _startSet;
         private bool _endSet;
 
+        private readonly AnimationController _animationController = new();
+
         // Constructor
         public MainWindow()
         {
             InitializeComponent();
 
-            _gridModel = new GridModel(GridContainer, Square_MouseLeftButtonDown, Square_MouseRightButtonDown, Square_MouseEnter);
+            _gridModel = new GridModel(GridContainer, Square_MouseLeftButtonDown, Square_MouseRightButtonDown, Square_MouseEnter, _animationController);
             _gridModel.CreateGrid();
 
             _helpers = new Helpers(GridContainer);
@@ -47,25 +49,29 @@ namespace Pathfinding_Visualizer
 
         private async void RunBFS_Click(object sender, RoutedEventArgs e)
         {
-            BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers);
+            _animationController.Reset();
+            BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController);
             await bfs.Run();
         }
 
         private async void RunDFS_Click(object sender, RoutedEventArgs e)
         {
-            DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers);
+            _animationController.Reset();
+            DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController);
             await dfs.Run();
         }
 
         private async void RunDijkstra_Click(object sender, RoutedEventArgs e)
         {
-            Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers);
+            _animationController.Reset();
+            Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController);
             await dijkstra.Run();
         }
 
         private async void RunAStar_Click(object sender, RoutedEventArgs e)
         {
-            AStar aStar = new AStar(_gridModel, _helpers);
+            _animationController.Reset();
+            AStar aStar = new AStar(_gridModel, _helpers, _animationController);
             await aStar.Run();
         }
 
@@ -186,9 +192,24 @@ namespace Pathfinding_Visualizer
         /// <param name="e"></param>
         private void AnimationSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_gridModel == null) return;
+            if (_animationController == null) return;
 
-            _gridModel.animationDelay = 101 - (int)AnimationSpeedSlider.Value;
+            _animationController.animationDelay = 101 - (int)AnimationSpeedSlider.Value;
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            _animationController.Pause();
+        }
+
+        private void Resume_Click(object sender, RoutedEventArgs e)
+        {
+            _animationController.Resume();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            _animationController.Stop();
         }
     }
 }

@@ -21,12 +21,12 @@ namespace Pathfinding_Visualizer.Models
 
         private Helpers _helpers;
 
+        private AnimationController _animationController;
+
         private Node[,] _nodes;
 
         private int _rows = 20;
         private int _columns = 20;
-
-        public int animationDelay { get; set; } = 20;
 
         public int Rows
         {
@@ -40,10 +40,11 @@ namespace Pathfinding_Visualizer.Models
             set => _columns = value;
         }
 
-        public GridModel(UniformGrid gridContainer, MouseButtonEventHandler leftClick, MouseButtonEventHandler rightClick, MouseEventHandler mouseEnter)
+        public GridModel(UniformGrid gridContainer, MouseButtonEventHandler leftClick, MouseButtonEventHandler rightClick, MouseEventHandler mouseEnter, AnimationController animationController)
         {
             _gridContainer = gridContainer;
             _helpers = new Helpers(_gridContainer);
+            _animationController = animationController;
             _leftClick = leftClick;
             _rightClick = rightClick;
             _mouseEnter = mouseEnter;
@@ -167,7 +168,7 @@ namespace Pathfinding_Visualizer.Models
                     if (square != null)
                         UpdateNodeColour(square);
 
-                    await Task.Delay(animationDelay);
+                    await _animationController.WaitAsync();
                 }
 
                 current = parent[current];
