@@ -74,7 +74,7 @@ namespace Pathfinding_Visualizer.Algorithms
                         if (square != null)
                             _gridModel.UpdateNodeColour(square);
 
-                        await Task.Delay(20);
+                        await Task.Delay(_gridModel.animationDelay);
                     }
                 }
             }

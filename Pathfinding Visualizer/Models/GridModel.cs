@@ -26,6 +26,8 @@ namespace Pathfinding_Visualizer.Models
         private int _rows = 20;
         private int _columns = 20;
 
+        public int animationDelay { get; set; } = 20;
+
         public int Rows
         {
             get => _rows;
@@ -165,7 +167,7 @@ namespace Pathfinding_Visualizer.Models
                     if (square != null)
                         UpdateNodeColour(square);
 
-                    await Task.Delay(40);
+                    await Task.Delay(animationDelay);
                 }
 
                 current = parent[current];

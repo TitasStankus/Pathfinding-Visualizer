@@ -178,5 +178,17 @@ namespace Pathfinding_Visualizer
         {
             _gridModel.ResetPath();
         }
+
+        /// <summary>
+        /// Handles the change of the animation speed slider to adjust the delay between animation steps
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AnimationSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_gridModel == null) return;
+
+            _gridModel.animationDelay = 101 - (int)AnimationSpeedSlider.Value;
+        }
     }
 }
