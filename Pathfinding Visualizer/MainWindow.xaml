@@ -77,6 +77,12 @@
                 Content="Stop"
                 Click="Stop_Click"/>
 
+            <TextBlock
+                x:Name="TimeLabel"
+                Margin="20,0,0,0"
+                VerticalAlignment="Center"
+                Text="0 ms"/>
+
         </StackPanel>
 
 

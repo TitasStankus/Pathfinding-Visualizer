@@ -1,6 +1,7 @@
 ﻿using Pathfinding_Visualizer.Models;
 using Pathfinding_Visualizer.Utilities;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -13,12 +14,14 @@ namespace Pathfinding_Visualizer.Algorithms
         private GridModel _gridModel;
         private Helpers _helpers;
         private AnimationController _animationController;
+        private Stopwatch _stopwatch;
 
-        public BreadthFirstSearch(GridModel gridModel, Helpers helpers, AnimationController animationController)
+        public BreadthFirstSearch(GridModel gridModel, Helpers helpers, AnimationController animationController, Stopwatch stopwatch)
         {
             _gridModel = gridModel;
             _helpers = helpers;
             _animationController = animationController;
+            _stopwatch = stopwatch;
         }
 
         /// <summary>
@@ -27,6 +30,8 @@ namespace Pathfinding_Visualizer.Algorithms
         /// <returns></returns>
         public async Task Run()
         {
+            _stopwatch.Restart();
+
             Node? start = _helpers.GetStartNode();
             Node? end = _helpers.GetEndNode();
 
@@ -81,8 +86,8 @@ namespace Pathfinding_Visualizer.Algorithms
                 }
             }
 
+            _stopwatch.Stop();
             _gridModel.DrawPath(parent, start, end);
-
         }
     }
 }

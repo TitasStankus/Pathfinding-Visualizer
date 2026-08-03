@@ -1,6 +1,7 @@
 ﻿using Pathfinding_Visualizer.Algorithms;
 using Pathfinding_Visualizer.Models;
 using Pathfinding_Visualizer.Utilities;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,37 +46,85 @@ namespace Pathfinding_Visualizer
             MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
         }
 
-        // ---------------------------- Algorithm Buttons ------------------------
+        // ------------------------ Algorithm Buttons ------------------------
 
         private async void RunBFS_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
-            BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController);
-            await bfs.Run();
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+
+            try
+            {
+                await bfs.Run();
+                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+            }
+            catch
+            {
+                MessageBox.Show("Terminated");
+            }
         }
 
         private async void RunDFS_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
-            DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController);
-            await dfs.Run();
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+
+            try
+            {
+                await dfs.Run();
+                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+            }
+            catch
+            {
+                MessageBox.Show("Terminated");
+            }
         }
 
         private async void RunDijkstra_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
-            Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController);
-            await dijkstra.Run();
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController, stopwatch);
+
+            try
+            {
+                await dijkstra.Run();
+                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+            }
+            catch
+            {
+                MessageBox.Show("Terminated");
+            }
         }
 
         private async void RunAStar_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
-            AStar aStar = new AStar(_gridModel, _helpers, _animationController);
-            await aStar.Run();
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            AStar aStar = new AStar(_gridModel, _helpers, _animationController, stopwatch);
+
+            try
+            {
+                await aStar.Run();
+                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+            }
+            catch
+            {
+                MessageBox.Show("Terminated");
+            }
         }
 
-        // ---------------------------- Event Handlers ---------------------------
+        // ----------------------- Mouse Event Handlers -----------------------
 
         /// <summary>
         /// Handles the mouse left button down event on a square to start drawing walls
@@ -146,6 +195,8 @@ namespace Pathfinding_Visualizer
                 _gridModel.ChangeState(sender);
             }
         }
+
+        // --------------------- Animation Event Handlers ---------------------
 
         /// <summary>
         /// Handles the click event on the Generate Grid button to create a new grid with the specified size
