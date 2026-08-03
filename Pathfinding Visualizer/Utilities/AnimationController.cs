@@ -14,9 +14,15 @@ namespace Pathfinding_Visualizer.Utilities
 
         public CancellationToken Token => _cts.Token;
 
+        private bool _isPaused;
+
         public async Task WaitAsync()
         {
-            _pauseEvent.Wait();
+            while (_isPaused)
+            {
+                Token.ThrowIfCancellationRequested();
+                await Task.Delay(20);
+            }
 
             Token.ThrowIfCancellationRequested();
 
@@ -25,11 +31,13 @@ namespace Pathfinding_Visualizer.Utilities
 
         public void Pause()
         {
+            _isPaused = true;
             _pauseEvent.Reset();
         }
 
         public void Resume()
         {
+            _isPaused = false;
             _pauseEvent.Set();
         }
 
