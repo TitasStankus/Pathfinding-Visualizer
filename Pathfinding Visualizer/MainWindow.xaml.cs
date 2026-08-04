@@ -48,80 +48,72 @@ namespace Pathfinding_Visualizer
 
         // ------------------------ Algorithm Buttons ------------------------
 
-        private async void RunBFS_Click(object sender, RoutedEventArgs e)
+        private async void RunAlgorithm_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
-
-            try
+            switch (AlgorithmComboBox.SelectedIndex)
             {
-                await bfs.Run();
-                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+                case 0:
+                    BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+
+                    try
+                    {
+                        await bfs.Run();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Terminated");
+                    }
+
+                    break;
+
+                case 1:
+                    DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+
+                    try
+                    {
+                        await dfs.Run();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Terminated");
+                    }
+
+                    break;
+
+                case 2:
+                    Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController, stopwatch);
+
+                    try
+                    {
+                        await dijkstra.Run();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Terminated");
+                    }
+
+                    break;
+
+                case 3:
+                    AStar aStar = new AStar(_gridModel, _helpers, _animationController, stopwatch);
+
+                    try
+                    {
+                        await aStar.Run();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Terminated");
+                    }
+
+                    break;
             }
-            catch
-            {
-                MessageBox.Show("Terminated");
-            }
-        }
 
-        private async void RunDFS_Click(object sender, RoutedEventArgs e)
-        {
-            _animationController.Reset();
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
-
-            try
-            {
-                await dfs.Run();
-                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
-            }
-            catch
-            {
-                MessageBox.Show("Terminated");
-            }
-        }
-
-        private async void RunDijkstra_Click(object sender, RoutedEventArgs e)
-        {
-            _animationController.Reset();
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController, stopwatch);
-
-            try
-            {
-                await dijkstra.Run();
-                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
-            }
-            catch
-            {
-                MessageBox.Show("Terminated");
-            }
-        }
-
-        private async void RunAStar_Click(object sender, RoutedEventArgs e)
-        {
-            _animationController.Reset();
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            AStar aStar = new AStar(_gridModel, _helpers, _animationController, stopwatch);
-
-            try
-            {
-                await aStar.Run();
-                TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
-            }
-            catch
-            {
-                MessageBox.Show("Terminated");
-            }
+            TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
         }
 
         // ----------------------- Mouse Event Handlers -----------------------

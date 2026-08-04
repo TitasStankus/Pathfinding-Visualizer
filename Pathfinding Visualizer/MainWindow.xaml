@@ -23,7 +23,7 @@
                 Text="20"/>
 
             <Button
-                Content="Create Grid"
+                Content="Create/Reset Grid"
                 Click="GenerateGrid_Click"
                 Margin="10,0,0,0"/>
 
@@ -32,25 +32,37 @@
                 Click="ResetPath_Click"
                 Margin="10,0,0,0"/>
 
-            <Button
-                Content="Run BFS"
-                Click="RunBFS_Click"
-                Margin="10,0,0,0"/>
+            <TextBlock
+                Text="Algorithm:"
+                VerticalAlignment="Center"
+                Margin="20,0,5,0"/>
+
+            <ComboBox
+                x:Name="AlgorithmComboBox"
+                Width="150"
+                SelectedIndex="0">
+
+                <ComboBoxItem Content="Breadth-First Search"/>
+                <ComboBoxItem Content="Depth-First Search"/>
+                <ComboBoxItem Content="Dijkstra"/>
+                <ComboBoxItem Content="A*"/>
+            </ComboBox>
 
             <Button
-                Content="Run DFS"
-                Click="RunDFS_Click"
-                Margin="10,0,0,0"/>
+                Content="Run"
+                Click="RunAlgorithm_Click"/>
 
             <Button
-                Content="Run Dijkstra"
-                Click="RunDijkstra_Click"
-                Margin="10,0,0,0"/>
+                Content="Pause"
+                Click="Pause_Click"/>
 
             <Button
-                Content="Run A*"
-                Click="RunAStar_Click"
-                Margin="10,0,0,0"/>
+                Content="Resume"
+                Click="Resume_Click"/>
+
+            <Button
+                Content="Stop"
+                Click="Stop_Click"/>
 
             <TextBlock
                 Text="Animation Speed:"
@@ -64,18 +76,6 @@
                 Value="20"
                 Width="150"
                 ValueChanged="AnimationSpeedSlider_ValueChanged"/>
-
-            <Button
-                Content="Pause"
-                Click="Pause_Click"/>
-
-            <Button
-                Content="Resume"
-                Click="Resume_Click"/>
-            
-            <Button
-                Content="Stop"
-                Click="Stop_Click"/>
 
             <TextBlock
                 x:Name="TimeLabel"
