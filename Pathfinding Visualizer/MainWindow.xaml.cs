@@ -1,7 +1,9 @@
 ﻿using Pathfinding_Visualizer.Algorithms;
+using Pathfinding_Visualizer.MazeGeneration;
 using Pathfinding_Visualizer.Models;
 using Pathfinding_Visualizer.Utilities;
 using System.Diagnostics;
+using System.Reflection.Emit;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +48,7 @@ namespace Pathfinding_Visualizer
             MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
         }
 
-        // ------------------------ Algorithm Buttons ------------------------
+        // ------------------------ Generation Buttons ------------------------
 
         private async void RunAlgorithm_Click(object sender, RoutedEventArgs e)
         {
@@ -114,6 +116,20 @@ namespace Pathfinding_Visualizer
             }
 
             TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+        }
+
+        private async void GenerateMaze_Click(object sender, RoutedEventArgs e)
+        {
+            IMazeGenerator generator = null;
+
+            switch (MazeComboBox.SelectedIndex)
+            {
+                case 0:
+                    generator = new RandomWalls(_gridModel, _animationController);
+                    break;
+            }
+
+            await generator.Generate();
         }
 
         // ----------------------- Mouse Event Handlers -----------------------

@@ -82,6 +82,23 @@
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="0 ms"/>
+            
+            <TextBlock
+                Text="Maze:"
+                VerticalAlignment="Center"
+                Margin="20,0,5,0"/>
+
+            <ComboBox
+                x:Name="MazeComboBox"
+                Width="150"
+                SelectedIndex="0">
+                
+                <ComboBoxItem Content="Random Walls"/>
+            </ComboBox>
+            
+            <Button
+                Content="Generate Maze"
+                Click="GenerateMaze_Click"/>
 
         </StackPanel>
 

@@ -88,6 +88,11 @@ namespace Pathfinding_Visualizer.Models
             }
         }
 
+        public Node[,] GetNodes()
+        {
+            return _nodes;
+        }
+
         /// <summary>
         /// Updates the colour of a square based on its state
         /// </summary>
@@ -117,6 +122,16 @@ namespace Pathfinding_Visualizer.Models
                     square.Background = Brushes.Yellow;
                     break;
             }
+        }
+
+        /// <summary>
+        /// Takes a node and parses it as a border to update the colour of the square
+        /// </summary>
+        /// <param name="node"></param>
+        public void UpdateNodeColour(Node node)
+        {
+            Border? square = _helpers.GetBorderForNode(node);
+            if (square != null) UpdateNodeColour(square);
         }
 
         /// <summary>
