@@ -216,5 +216,18 @@ namespace Pathfinding_Visualizer.Models
                 node.Distance = int.MaxValue;
             }
         }
+
+        public void FillWithWalls()
+        {
+            foreach (Border square in _gridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+                if (node.State != NodeState.Start && node.State != NodeState.End)
+                {
+                    node.State = NodeState.Wall;
+                    UpdateNodeColour(square);
+                }
+            }
+        }
     }
 }

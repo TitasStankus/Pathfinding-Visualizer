@@ -94,6 +94,7 @@
                 SelectedIndex="0">
                 
                 <ComboBoxItem Content="Random Walls"/>
+                <ComboBoxItem Content="Recursive Backtracking"/>
             </ComboBox>
             
             <Button

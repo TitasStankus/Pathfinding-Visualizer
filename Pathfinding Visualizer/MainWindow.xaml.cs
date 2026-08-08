@@ -127,6 +127,9 @@ namespace Pathfinding_Visualizer
                 case 0:
                     generator = new RandomWalls(_gridModel, _animationController);
                     break;
+                case 1:
+                    generator = new RecursiveBacktracking(_gridModel, _animationController);
+                    break;
             }
 
             await generator.Generate();
