@@ -130,6 +130,9 @@ namespace Pathfinding_Visualizer
                 case 1:
                     generator = new RecursiveBacktracking(_gridModel, _animationController);
                     break;
+                case 2:
+                    generator = new PrimsMaze(_gridModel, _animationController);
+                    break;
             }
 
             await generator.Generate();

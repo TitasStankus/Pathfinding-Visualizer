@@ -95,6 +95,7 @@
                 
                 <ComboBoxItem Content="Random Walls"/>
                 <ComboBoxItem Content="Recursive Backtracking"/>
+                <ComboBoxItem Content="Prim's Algorithm"/>
             </ComboBox>
             
             <Button
