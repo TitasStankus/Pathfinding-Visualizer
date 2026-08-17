@@ -5,110 +5,231 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pathfinding_Visualizer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="900">
+        Title="MainWindow"
+        Height="1080"
+        Width="1920">
+
     <Grid>
 
+        <!-- Two rows:
+         Row 0 = controls/statistics
+         Row 1 = pathfinding grid -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="250"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Two columns:
+         Column 0 = statistics
+         Column 1 = controls -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                Margin="10">
 
-            <TextBox
+        <!-- STATISTICS -->
+        <Border
+        Grid.Row="0"
+        Grid.Column="0"
+        Margin="10"
+        BorderBrush="Gray"
+        BorderThickness="1"
+        Padding="10">
+
+            <StackPanel>
+
+                <TextBlock
+                Text="Statistics"
+                FontSize="20"
+                FontWeight="Bold"
+                Margin="0,0,0,15"/>
+
+                <TextBlock Text="Algorithm"/>
+
+                <TextBlock
+                x:Name="AlgorithmText"
+                FontWeight="Bold"
+                Margin="0,0,0,10"/>
+
+                <TextBlock Text="Nodes Visited"/>
+
+                <TextBlock
+                x:Name="NodesVisitedText"
+                FontWeight="Bold"
+                Margin="0,0,0,10"/>
+
+                <TextBlock Text="Path Length"/>
+
+                <TextBlock
+                x:Name="PathLengthText"
+                FontWeight="Bold"
+                Margin="0,0,0,10"/>
+
+                <TextBlock Text="Runtime"/>
+
+                <TextBlock
+                x:Name="RuntimeText"
+                FontWeight="Bold"/>
+
+            </StackPanel>
+
+        </Border>
+
+
+        <!-- CONTROLS -->
+        <Grid
+        Grid.Row="0"
+        Grid.Column="1"
+        Margin="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+
+
+            <!-- CONTROL ROW 1 -->
+            <StackPanel
+            Grid.Row="0"
+            Orientation="Horizontal"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+
+                <TextBox
                 x:Name="GridSizeInput"
-                Width="100"
-                Text="20"/>
+                Width="140"
+                Height="60"
+                Text="40"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                FontSize="16"/>
 
-            <Button
+                <Button
                 Content="Create/Reset Grid"
                 Click="GenerateGrid_Click"
-                Margin="10,0,0,0"/>
+                Margin="10,0,0,0"
+                Padding="20,10"/>
 
-            <Button
+                <Button
                 Content="Reset Path"
                 Click="ResetPath_Click"
-                Margin="10,0,0,0"/>
+                Margin="10,0,0,0"
+                Padding="20,10"/>
 
-            <TextBlock
+                <TextBlock
                 Text="Algorithm:"
                 VerticalAlignment="Center"
-                Margin="20,0,5,0"/>
+                Margin="40,0,10,0"
+                FontSize="16"/>
 
-            <ComboBox
+                <ComboBox
                 x:Name="AlgorithmComboBox"
-                Width="150"
-                SelectedIndex="0">
+                Width="300"
+                Height="60"
+                SelectedIndex="0"
+                FontSize="16"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
 
-                <ComboBoxItem Content="Breadth-First Search"/>
-                <ComboBoxItem Content="Depth-First Search"/>
-                <ComboBoxItem Content="Dijkstra"/>
-                <ComboBoxItem Content="A*"/>
-            </ComboBox>
+                    <ComboBoxItem Content="Breadth-First Search"/>
+                    <ComboBoxItem Content="Depth-First Search"/>
+                    <ComboBoxItem Content="Dijkstra"/>
+                    <ComboBoxItem Content="A*"/>
 
-            <Button
+                </ComboBox>
+
+                <Button
                 Content="Run"
-                Click="RunAlgorithm_Click"/>
+                Click="RunAlgorithm_Click"
+                Margin="10,0,0,0"
+                Padding="20,10"/>
 
-            <Button
+                <Button
                 Content="Pause"
-                Click="Pause_Click"/>
+                Click="Pause_Click"
+                Margin="5,0,0,0"
+                Padding="20,10"/>
 
-            <Button
+                <Button
                 Content="Resume"
-                Click="Resume_Click"/>
+                Click="Resume_Click"
+                Margin="5,0,0,0"
+                Padding="20,10"/>
 
-            <Button
+                <Button
                 Content="Stop"
-                Click="Stop_Click"/>
+                Click="Stop_Click"
+                Margin="5,0,0,0"
+                Padding="20,10"/>
 
-            <TextBlock
+            </StackPanel>
+
+
+            <!-- CONTROL ROW 2 -->
+            <StackPanel
+            Grid.Row="1"
+            Orientation="Horizontal"
+            Margin="0,10,0,0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+
+                <TextBlock
                 Text="Animation Speed:"
                 VerticalAlignment="Center"
-                Margin="20,0,5,0"/>
+                Margin="0,0,5,0"
+                FontSize="16"/>
 
-            <Slider
+                <Slider
                 x:Name="AnimationSpeedSlider"
                 Minimum="1"
                 Maximum="100"
                 Value="20"
-                Width="150"
+                Width="200"
+                Height="32"
+                VerticalAlignment="Bottom"
                 ValueChanged="AnimationSpeedSlider_ValueChanged"/>
 
-            <TextBlock
-                x:Name="TimeLabel"
-                Margin="20,0,0,0"
-                VerticalAlignment="Center"
-                Text="0 ms"/>
-            
-            <TextBlock
+                <TextBlock
                 Text="Maze:"
                 VerticalAlignment="Center"
-                Margin="20,0,5,0"/>
+                Margin="25,0,5,0"
+                FontSize="16"/>
 
-            <ComboBox
+                <ComboBox
                 x:Name="MazeComboBox"
-                Width="150"
-                SelectedIndex="0">
-                
-                <ComboBoxItem Content="Random Walls"/>
-                <ComboBoxItem Content="Recursive Backtracking"/>
-                <ComboBoxItem Content="Prim's Algorithm"/>
-            </ComboBox>
-            
-            <Button
+                Width="200"
+                Height="50"
+                SelectedIndex="0"
+                FontSize="16"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
+
+                    <ComboBoxItem Content="Random Walls"/>
+                    <ComboBoxItem Content="Recursive Backtracking"/>
+                    <ComboBoxItem Content="Prim's Algorithm"/>
+
+                </ComboBox>
+
+                <Button
                 Content="Generate Maze"
-                Click="GenerateMaze_Click"/>
+                Click="GenerateMaze_Click"
+                Margin="10,0,0,0"
+                Padding="20,10"/>
 
-        </StackPanel>
+            </StackPanel>
+
+        </Grid>
 
 
+        <!-- PATHFINDING GRID -->
         <UniformGrid
         Grid.Row="1"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
         x:Name="GridContainer"
         Margin="10"/>
 
     </Grid>
+
 </Window>

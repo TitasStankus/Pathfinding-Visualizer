@@ -15,13 +15,15 @@ namespace Pathfinding_Visualizer.Algorithms
         private Helpers _helpers;
         private AnimationController _animationController;
         private Stopwatch _stopwatch;
+        private readonly StatisticsManager _statisticsManager;
 
-        public Dijkstra(GridModel gridModel, Helpers helpers, AnimationController animationController, Stopwatch stopwatch)
+        public Dijkstra(GridModel gridModel, Helpers helpers, AnimationController animationController, Stopwatch stopwatch, StatisticsManager statisticsManager)
         {
             _gridModel = gridModel;
             _helpers = helpers;
             _animationController = animationController;
             _stopwatch = stopwatch;
+            _statisticsManager = statisticsManager;
         }
 
         /// <summary>
@@ -92,6 +94,8 @@ namespace Pathfinding_Visualizer.Algorithms
                             if (square != null)
                                 _gridModel.UpdateNodeColour(square);
 
+                            _statisticsManager.IncrementNodesVisited();
+
                             await _animationController.WaitAsync();
                         }
                     }
@@ -99,6 +103,7 @@ namespace Pathfinding_Visualizer.Algorithms
             }
 
             _stopwatch.Stop();
+            _statisticsManager.SetRuntime(_stopwatch.Elapsed);
             _gridModel.DrawPath(parent, start, end);
         }
     }

@@ -35,12 +35,14 @@ namespace Pathfinding_Visualizer
 
         private readonly AnimationController _animationController = new();
 
+        private readonly StatisticsManager _statisticsManager = new();
+
         // Constructor
         public MainWindow()
         {
             InitializeComponent();
 
-            _gridModel = new GridModel(GridContainer, Square_MouseLeftButtonDown, Square_MouseRightButtonDown, Square_MouseEnter, _animationController);
+            _gridModel = new GridModel(GridContainer, Square_MouseLeftButtonDown, Square_MouseRightButtonDown, Square_MouseEnter, _animationController, _statisticsManager);
             _gridModel.CreateGrid();
 
             _helpers = new Helpers(GridContainer);
@@ -53,13 +55,16 @@ namespace Pathfinding_Visualizer
         private async void RunAlgorithm_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Reset();
+            _statisticsManager.Reset();
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             switch (AlgorithmComboBox.SelectedIndex)
             {
                 case 0:
-                    BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+                    BreadthFirstSearch bfs = new BreadthFirstSearch(_gridModel, _helpers, _animationController, stopwatch, _statisticsManager);
+                    
+                    _statisticsManager.SetAlgorithm("Breadth-First Search");
 
                     try
                     {
@@ -73,7 +78,9 @@ namespace Pathfinding_Visualizer
                     break;
 
                 case 1:
-                    DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController, stopwatch);
+                    DepthFirstSearch dfs = new DepthFirstSearch(_gridModel, _helpers, _animationController, stopwatch, _statisticsManager);
+
+                    _statisticsManager.SetAlgorithm("Depth-First Search");
 
                     try
                     {
@@ -87,7 +94,9 @@ namespace Pathfinding_Visualizer
                     break;
 
                 case 2:
-                    Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController, stopwatch);
+                    Dijkstra dijkstra = new Dijkstra(_gridModel, _helpers, _animationController, stopwatch, _statisticsManager);
+
+                    _statisticsManager.SetAlgorithm("Dijkstra's Algorithm");
 
                     try
                     {
@@ -101,7 +110,9 @@ namespace Pathfinding_Visualizer
                     break;
 
                 case 3:
-                    AStar aStar = new AStar(_gridModel, _helpers, _animationController, stopwatch);
+                    AStar aStar = new AStar(_gridModel, _helpers, _animationController, stopwatch, _statisticsManager);
+
+                    _statisticsManager.SetAlgorithm("A* Search");
 
                     try
                     {
@@ -115,7 +126,7 @@ namespace Pathfinding_Visualizer
                     break;
             }
 
-            TimeLabel.Text = stopwatch.ElapsedMilliseconds + " ms";
+            UpdateStatistics();
         }
 
         private async void GenerateMaze_Click(object sender, RoutedEventArgs e)
@@ -275,6 +286,19 @@ namespace Pathfinding_Visualizer
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             _animationController.Stop();
+        }
+
+        // ------------------------- UI Event Handler -------------------------
+
+        private void UpdateStatistics()
+        {
+            AlgorithmText.Text = _statisticsManager.CurrentAlgorithm;
+
+            NodesVisitedText.Text = _statisticsManager.NodesVisited.ToString();
+
+            PathLengthText.Text = _statisticsManager.PathLength.ToString();
+
+            RuntimeText.Text = $"{_statisticsManager.Runtime.TotalMilliseconds:F2} ms";
         }
     }
 }

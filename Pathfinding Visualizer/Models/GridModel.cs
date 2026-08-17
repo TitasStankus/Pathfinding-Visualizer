@@ -23,6 +23,8 @@ namespace Pathfinding_Visualizer.Models
 
         private AnimationController _animationController;
 
+        private readonly StatisticsManager _statisticsManager;
+
         private Node[,] _nodes;
 
         private int _rows = 20;
@@ -40,11 +42,12 @@ namespace Pathfinding_Visualizer.Models
             set => _columns = value;
         }
 
-        public GridModel(UniformGrid gridContainer, MouseButtonEventHandler leftClick, MouseButtonEventHandler rightClick, MouseEventHandler mouseEnter, AnimationController animationController)
+        public GridModel(UniformGrid gridContainer, MouseButtonEventHandler leftClick, MouseButtonEventHandler rightClick, MouseEventHandler mouseEnter, AnimationController animationController, StatisticsManager statisticsManager)
         {
             _gridContainer = gridContainer;
             _helpers = new Helpers(_gridContainer);
             _animationController = animationController;
+            _statisticsManager = statisticsManager;
             _leftClick = leftClick;
             _rightClick = rightClick;
             _mouseEnter = mouseEnter;
@@ -172,6 +175,8 @@ namespace Pathfinding_Visualizer.Models
 
             Node current = end;
 
+            int pathLength = 0;
+
             while (current != start)
             {
                 if (current != end)
@@ -186,8 +191,11 @@ namespace Pathfinding_Visualizer.Models
                     await _animationController.WaitAsync();
                 }
 
+                pathLength++;
                 current = parent[current];
             }
+
+            _statisticsManager.SetPathLength(pathLength);
         }
 
         /// <summary>
