@@ -105,7 +105,7 @@ namespace Pathfinding_Visualizer.Algorithms
 
             _stopwatch.Stop();
             _statisticsManager.SetRuntime(_stopwatch.Elapsed);
-            _gridModel.DrawPath(parent, start, end);
+            await _gridModel.DrawPath(parent, start, end);
         }
     }
 }

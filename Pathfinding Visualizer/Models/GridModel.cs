@@ -165,7 +165,7 @@ namespace Pathfinding_Visualizer.Models
         /// <param name="parent"></param>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        public async void DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
+        public async Task DrawPath(Dictionary<Node, Node> parent, Node start, Node end)
         {
             if (!parent.ContainsKey(end))
             {
