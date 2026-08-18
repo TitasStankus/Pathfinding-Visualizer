@@ -100,7 +100,7 @@
                 x:Name="GridSizeInput"
                 Width="140"
                 Height="60"
-                Text="40"
+                Text="20"
                 VerticalContentAlignment="Center"
                 HorizontalContentAlignment="Center"
                 FontSize="16"/>
