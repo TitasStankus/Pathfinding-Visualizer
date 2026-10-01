@@ -43,6 +43,8 @@ namespace Pathfinding_Visualizer.Algorithms
                 return;
             }
 
+            _gridModel.ResetPath();
+
             Stack<Node> stack = new Stack<Node>();
 
             HashSet<Node> visited = new HashSet<Node>();

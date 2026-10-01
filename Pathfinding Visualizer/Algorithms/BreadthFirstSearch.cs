@@ -43,6 +43,8 @@ namespace Pathfinding_Visualizer.Algorithms
                 return;
             }
 
+            _gridModel.ResetPath();
+
             Queue<Node> queue = new Queue<Node>();
 
             HashSet<Node> visited = new HashSet<Node>();
