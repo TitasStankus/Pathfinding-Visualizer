@@ -237,5 +237,18 @@ namespace Pathfinding_Visualizer.Models
                 }
             }
         }
+
+        public void ResetWalls()
+        {
+            foreach (Border square in _gridContainer.Children)
+            {
+                Node node = (Node)square.Tag;
+                if (node.State == NodeState.Wall)
+                {
+                    node.State = NodeState.Empty;
+                    UpdateNodeColour(square);
+                }
+            }
+        }
     }
 }

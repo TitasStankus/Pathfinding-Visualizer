@@ -20,6 +20,8 @@ namespace Pathfinding_Visualizer.MazeGeneration
 
         public Task Generate()
         {
+            _gridModel.ResetWalls();
+
             Node[,] nodes = _gridModel.GetNodes();
 
             foreach (Node node in nodes)

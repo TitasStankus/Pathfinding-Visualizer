@@ -27,7 +27,7 @@ namespace Pathfinding_Visualizer.MazeGeneration
 
             _nodes = _gridModel.GetNodes();
 
-            Node start = _nodes[1, 1];
+            Node start = _nodes[0, 0];
 
             start.State = NodeState.Empty;
 
